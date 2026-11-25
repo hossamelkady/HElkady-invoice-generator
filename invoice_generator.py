@@ -234,15 +234,22 @@ def draw_invoice_page(c: canvas.Canvas, invoice: dict, lang: str) -> None:
         row_by_key = {"col_item": idx, "col_desc": item["description"], "col_qty": item["qty"],
                       "col_unit": money(float(item["unit_price"]), currency),
                       "col_total": money(total, currency)}
-        if y < MARGIN + 40 * mm:
+        if y < MARGIN + 25 * mm:
             c.showPage()
             y = PAGE_H - MARGIN
+            # repeat the table header on every continuation page
+            draw_row([s[col["key"]] for col in columns], y, header=True, fill=ACCENT)
+            y -= row_h
         draw_row([row_by_key[col["key"]] for col in columns], y,
                  fill=LIGHT if idx % 2 == 0 else None)
         y -= row_h
     y -= 8 * mm
 
-    # totals block
+    # totals block (keep it together; start a new page if it would not fit)
+    totals_rows = 1 + bool(totals["discount"]) + bool(invoice.get("tax_rate")) + 1
+    if y < MARGIN + totals_rows * 7 * mm + 6 * mm:
+        c.showPage()
+        y = PAGE_H - MARGIN
     tot_anchor = right if not is_ar else left + 75 * mm
     tot_align = "right" if not is_ar else "left"
     rows = [(s["subtotal"], totals["subtotal"])]
@@ -260,9 +267,15 @@ def draw_invoice_page(c: canvas.Canvas, invoice: dict, lang: str) -> None:
     y -= 6 * mm
 
     if invoice.get("notes"):
+        if y < MARGIN + 12 * mm:
+            c.showPage()
+            y = PAGE_H - MARGIN
         draw_mixed(c, anchor, y, f"{s['notes']}:", bold=True, align=side_align)
         y -= 6 * mm
         for line in invoice["notes"].splitlines():
+            if y < MARGIN + 6 * mm:
+                c.showPage()
+                y = PAGE_H - MARGIN
             draw_mixed(c, anchor, y, line, size=10, align=side_align, max_width=content_w)
             y -= 5 * mm
 

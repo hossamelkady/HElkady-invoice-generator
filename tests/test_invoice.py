@@ -66,5 +66,16 @@ class GenerateTests(unittest.TestCase):
         self._check_pdf(out, min_pages=2)
 
 
+class LongInvoiceTests(unittest.TestCase):
+    def test_long_invoice_paginates_without_error(self):
+        inv = load_example("invoice-en.json")
+        inv["items"] = [{"description": f"Item {i}", "qty": 1, "unit_price": 10} for i in range(60)]
+        inv["notes"] = "\n".join(f"note {i}" for i in range(15))
+        with tempfile.TemporaryDirectory() as tmp:
+            out = generate(inv, str(Path(tmp) / "long.pdf"), "en")
+            data = Path(out).read_bytes()
+        self.assertGreaterEqual(data.count(b"/Type /Page\n") + data.count(b"/Type /Page "), 2)
+
+
 if __name__ == "__main__":
     unittest.main()
