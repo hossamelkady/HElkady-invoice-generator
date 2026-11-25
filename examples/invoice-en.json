@@ -1,0 +1,25 @@
+{
+  "number": "INV-2026-014",
+  "date": "2026-11-25",
+  "due_date": "2026-12-09",
+  "currency": "EGP",
+  "seller": {
+    "name": "Hossam Elkady",
+    "address": "Cairo, Egypt",
+    "phone": "+20 100 000 0000",
+    "email": "hossam@example.com"
+  },
+  "client": {
+    "name": "Corner Shop LLC",
+    "address": "Nasr City, Cairo",
+    "phone": "+20 111 000 0000"
+  },
+  "items": [
+    {"description": "Stock management web app - milestone 1", "qty": 1, "unit_price": 8000},
+    {"description": "Deployment to client hosting", "qty": 1, "unit_price": 1500},
+    {"description": "Support hours (bug fixes)", "qty": 3, "unit_price": 250}
+  ],
+  "discount": 250,
+  "tax_rate": 14,
+  "notes": "Payment by bank transfer or Vodafone Cash within 14 days.\nMilestone 2 scope to be agreed separately."
+}

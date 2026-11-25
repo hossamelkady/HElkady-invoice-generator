@@ -1,0 +1,5 @@
+The fonts in this directory (Noto Naskh Arabic, Noto Sans) are licensed under
+the SIL Open Font License 1.1:
+https://openfontlicense.org
+
+Copyright 2012-2022 The Noto Project Authors (https://github.com/notofonts)
